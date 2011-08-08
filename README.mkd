@@ -1,0 +1,5 @@
+Bake
+====
+
+Bake is a small tool that is able to read a directory tree and makes a website
+out of it. The input can be simple HTML files or Markdown files with templates.
