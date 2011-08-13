@@ -1,6 +1,6 @@
 {
 	"name": "bake",
-	"description": "Javascript website bakery for markdown files",
+	"description": "javascript website bakery for markdown files",
 	"tags": ["website", "blog", "markdown", "template", "git"],
 	"version": "0.0.1",
 	"author": "Paul Vorbach <paul@vorb.de>",
@@ -16,7 +16,9 @@
 	],
 	"main": "lib/bake.js",
 	"dependencies": {
+		"cjson": ">=0.0.3",
+		"dive": ">=0.0.3",
 		"props": ">=0.0.2",
-		"dive": ">=0.0.2"
+		"marked": ">=0.0.1"
 	}
 }
