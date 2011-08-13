@@ -2,7 +2,7 @@
 	"name": "bake",
 	"description": "javascript website bakery for markdown files",
 	"tags": ["website", "blog", "markdown", "template", "git"],
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"author": "Paul Vorbach <paul@vorb.de>",
 	"repository": {
 		"type": "git",

@@ -2,9 +2,23 @@ _bake_ is a small tool that is able to read a directory tree of HTML and
 Markdown files and turns them into a website. It allows defining templates for
 the Markdown files.
 
-It is intended to be used as a post-receive hook for a GIT repository, that
-turns the contents of the repository into a website. This way it can be used as
-a CMS.
+Using this package is quite easy. Install it with [npm](http://npmjs.org).
+
+	npm install -g bake
+
+Then use the following code to "bake" your website
+
+	var bake = require("bake");
+
+	bake("/path/to/website");
+
+The directory structure at `/path/to/website` should be like in [the bake
+boilerplate](//github.com/pvorb/bake-tpl). You may fork it to quickly setup
+your site.
+
+This package is intended to be used as a post-receive hook for a GIT
+repository, that turns the contents of the repository into a website. This way
+it can be used as a CMS.
 
 Future plans include automatic generation of an page index as well as a Atom/RSS
 feed.
