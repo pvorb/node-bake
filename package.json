@@ -12,7 +12,7 @@
 		"web": "http://github.com/pvorb/bake/issues"
 	},
 	"engines": [
-		"node >= 0.4.10"
+		"node": ">= 0.4.10"
 	],
 	"main": "lib/bake.js",
 	"dependencies": {
