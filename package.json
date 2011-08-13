@@ -1,6 +1,6 @@
 {
 	"name": "bake",
-	"description": "Javascript website bakery",
+	"description": "Javascript website bakery for markdown files",
 	"tags": ["website", "blog", "markdown", "template", "git"],
 	"version": "0.0.1",
 	"author": "Paul Vorbach <paul@vorb.de>",
@@ -8,11 +8,15 @@
 		"type": "git",
 		"url": "http://github.com/pvorb/bake.git"
 	},
-	"bugs": "http://github.com/pvorb/bake/issues",
-	"engines": ["node >= 0.4.10"],
+	"bugs": {
+		"web": "http://github.com/pvorb/bake/issues"
+	},
+	"engines": [
+		"node >= 0.4.10"
+	],
 	"main": "lib/bake.js",
-	"dependencies": [
-		"props": ">=0.0.1",
+	"dependencies": {
+		"props": ">=0.0.2",
 		"dive": ">=0.0.2"
-	]
+	}
 }
