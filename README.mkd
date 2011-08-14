@@ -1,6 +1,13 @@
-_bake_ is a small tool that is able to read a directory tree of HTML and
-Markdown files and turns them into a website. It allows defining templates for
-the Markdown files.
+_bake_ is a small tool that is able to read a directory tree of Markdown files
+and turns them into a website. Other files are kept as they are. This way you
+can mix up Markdown files with individual HTML pages.
+
+It also allows defining templates for the Markdown files, that are
+automatically applied.
+
+
+Usage
+=====
 
 Using this package is quite easy. Install it with [npm](http://npmjs.org).
 
@@ -14,11 +21,119 @@ Then use the following code to "bake" your website
 
 The directory structure at `/path/to/website` should be like in [the bake
 boilerplate](//github.com/pvorb/bake-tpl). You may fork it to quickly setup
-your site.
+your site. It also serves as a usage example.
 
 This package is intended to be used as a post-receive hook for a GIT
 repository, that turns the contents of the repository into a website. This way
-it can be used as a CMS.
+it can be used as a CMS. But you don't have to use it like that. It also runs
+independent of GIT.
 
-Future plans include automatic generation of an page index as well as a Atom/RSS
-feed.
+
+Defining the content
+--------------------
+
+The content of your pages is defined in Markdown files in the folder `pub`. You
+also may define additional properties at the top of each document. Here is an
+example for a typical blog post:
+
+	title: First post
+	date: August, 14th 2011
+	author: Paul
+	template: post
+
+	This is my **first** blog post.
+
+	Here's a heading
+	----------------
+
+	> And this is a block quote
+
+This could be the content of the file `pub/first-post.mkd`. Every file that ends
+with `.mkd`, `.md` or `.markdown` is recognized as a Markdown file.
+
+As you can see it defines a `template`. Bake then looks for the file
+`tpl/post.tpl`. This may be an HTML file.
+
+A very basic version of this `post.tpl` would look like this:
+
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+			<title>{title} » {websiteTitle}</title>
+		</head>
+		<body>
+			<h1>{title}</h1>
+			<p>Written on {date} by {author}</p>
+
+	{__content}
+
+		</body>
+	</html>
+
+This will result in the HTML file `pub/first-post.html`:
+
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+			<title>First post » {websiteTitle}</title>
+		</head>
+		<body>
+			<h1>First post</h1>
+			<p>Written on August, 14th 2011 by Paul</p>
+
+	<p>This is my <strong>first</strong> blog post.</p>
+	<h2>Here's a heading</h2>
+	<blockquote>And this is a block quote</blockquote>
+
+		</body>
+	</html>
+
+As you can see `{websiteTitle}` is not replaced. Because this property stays the
+same for the whole site, you can define it in `conf/bake.json`:
+
+	{
+		"defaultTemplate": "post",
+		"defaultAuthor": "Paul",
+		"properties": {
+			"websiteTitle": "Paul's Weblog"
+		}
+	}
+
+Bake won't run, if this file doesn't exist.
+
+
+What this is not
+================
+
+Bake is no webserver. It doesn't replace your Apache/Nginx. So if you want your
+website to be accessible to the public, you have to change the settings of your
+webserver to use `pub/` as the root directory.
+
+Bake is no blogging engine. It doesn't provide generating an index or a feed. It
+doesn't have any commenting functionality.
+
+
+Bugs and Issues
+===============
+
+If you encounter any bugs or issues, feel free to open an issue at
+[github](//github.com/pvorb/bake/issues).
+
+License
+=======
+
+This package is licensed under the
+[MIT license](http://vorb.de/license/mit.html).
+
+Credits
+=======
+
+This work was inspired by
+[heimweh](http://anmutunddemut.de/serie/on-my-way-to-heimweh.html) by
+[ben_](http://anmutunddemut.de/)
+and [txtracer](http://konnexus.net/lexicon/txtracer) by
+[konnexus](http://konnexus.net/), but also by
+[wheat](https://github.com/creationix/wheat) by
+[creationix](http://creationix.com/).
