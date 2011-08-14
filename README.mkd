@@ -11,13 +11,17 @@ Usage
 
 Using this package is quite easy. Install it with [npm](http://npmjs.org).
 
-	npm install -g bake
+```bash
+$ npm install -g bake
+```
 
 Then use the following code to "bake" your website
 
-	var bake = require("bake");
+```javascript
+var bake = require("bake");
 
-	bake("/path/to/website");
+bake("/path/to/website");
+```
 
 The directory structure at `/path/to/website` should be like in [the bake
 boilerplate](//github.com/pvorb/bake-tpl). You may fork it to quickly setup
@@ -36,17 +40,19 @@ The content of your pages is defined in Markdown files in the folder `pub`. You
 also may define additional properties at the top of each document. Here is an
 example for a typical blog post:
 
-	title: First post
-	date: August, 14th 2011
-	author: Paul
-	template: post
+```markdown
+title: First post
+date: August, 14th 2011
+author: Paul
+template: post
 
-	This is my **first** blog post.
+This is my **first** blog post.
 
-	Here's a heading
-	----------------
+Here's a heading
+----------------
 
-	> And this is a block quote
+> And this is a block quote
+```
 
 This could be the content of the file `pub/first-post.mkd`. Every file that ends
 with `.mkd`, `.md` or `.markdown` is recognized as a Markdown file.
@@ -56,50 +62,56 @@ As you can see it defines a `template`. Bake then looks for the file
 
 A very basic version of this `post.tpl` would look like this:
 
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="utf-8">
-			<title>{title} » {websiteTitle}</title>
-		</head>
-		<body>
-			<h1>{title}</h1>
-			<p>Written on {date} by {author}</p>
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{title} » {websiteTitle}</title>
+	</head>
+	<body>
+		<h1>{title}</h1>
+		<p>Written on {date} by {author}</p>
 
-	{__content}
+{__content}
 
-		</body>
-	</html>
+	</body>
+</html>
+```
 
 This will result in the HTML file `pub/first-post.html`:
 
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="utf-8">
-			<title>First post » {websiteTitle}</title>
-		</head>
-		<body>
-			<h1>First post</h1>
-			<p>Written on August, 14th 2011 by Paul</p>
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>First post » {websiteTitle}</title>
+	</head>
+	<body>
+		<h1>First post</h1>
+		<p>Written on August, 14th 2011 by Paul</p>
 
-	<p>This is my <strong>first</strong> blog post.</p>
-	<h2>Here's a heading</h2>
-	<blockquote>And this is a block quote</blockquote>
+<p>This is my <strong>first</strong> blog post.</p>
+<h2>Here's a heading</h2>
+<blockquote>And this is a block quote</blockquote>
 
-		</body>
-	</html>
+	</body>
+</html>
+```
 
 As you can see `{websiteTitle}` is not replaced. Because this property stays the
 same for the whole site, you can define it in `conf/bake.json`:
 
-	{
-		"defaultTemplate": "post",
-		"defaultAuthor": "Paul",
-		"properties": {
-			"websiteTitle": "Paul's Weblog"
-		}
+```javascript
+{
+	"defaultTemplate": "post",
+	"defaultAuthor": "Paul",
+	"properties": {
+		"websiteTitle": "Paul's Weblog"
 	}
+}
+```
 
 Bake won't run, if this file doesn't exist.
 
