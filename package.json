@@ -2,7 +2,7 @@
 	"name": "bake",
 	"description": "javascript website bakery for markdown files",
 	"tags": ["website", "blog", "markdown", "template", "git"],
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"author": "Paul Vorbach <paul@vorb.de>",
 	"repository": {
 		"type": "git",
@@ -12,7 +12,7 @@
 		"web": "http://github.com/pvorb/bake/issues"
 	},
 	"engines": {
-		"node": ">= 0.4.10"
+		"node": ">= 0.4.0"
 	},
 	"main": "lib/bake.js",
 	"dependencies": {
