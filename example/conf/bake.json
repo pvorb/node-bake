@@ -4,6 +4,7 @@
 		"templates": "tpl"
 	},
 	"fileExtensions": {
+		"txt": "html",
 		"mkd": "html",
 		"md": "html",
 		"markdown": "html"
