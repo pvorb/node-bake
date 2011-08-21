@@ -9,8 +9,8 @@
 		"markdown": "html"
 	},
 	"defaultTemplate": "default",
-	"defaultAuthor" : "Paul Vorbach",
 	"properties": {
-		"websiteTitle": "Paul Vorbach"
+		"author": "Paul Vorbach"
+		"websiteTitle": "My Site"
 	}
 }
