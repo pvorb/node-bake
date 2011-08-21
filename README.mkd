@@ -8,7 +8,7 @@ templates may contain [embedded JavaScript][ejs] as a template language.
 Example
 =======
 
-A template may look like this:
+A template (`default.tpl`) may look like this:
 
 ```html
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ A template may look like this:
 </html>
 ```
 
-And a corresponding content file could look like this:
+And a corresponding content file (`post.txt`) could look like this:
 
 ```html
 title: A sample file
@@ -40,20 +40,20 @@ helloWorld: true
 <p>Sample text.</p>
 ```
 
-With a minimal configuration file
+With a minimal configuration file (`bake.json`)
 
 ```javascript
 {
 	"fileExtensions": {
-		"html": "html"
+		"txt": "html" // look for html files and save as html file
 	},
 	"properties": {
-		"siteTitle": "My Site"
+		"siteTitle": "My Site" // Global website title
 	}
 }
 ```
 
-the output would be:
+the output (`post.html`) would be:
 
 ```html
 <!DOCTYPE>
