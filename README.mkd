@@ -1,151 +1,129 @@
-_bake_ is a small tool that is able to read a directory tree of Markdown files
-and turns them into a website. Other files are kept as they are. This way you
-can mix up Markdown files with individual HTML pages.
+**bake** is a mighty template engine for static text files. It is something like
+[Tom Preston-Werner][mojombo]'s [jekyll][jekyll], but is independent of file
+types and markup languages.
 
-It also allows defining templates for the Markdown files, that are
-automatically applied.
+**bake** enables JavaScript templates for any type of text files. These
+templates may contain [embedded JavaScript][ejs] as a template language.
 
+Example
+=======
 
-Usage
-=====
-
-Using this package is quite easy. Install it with [npm](http://npmjs.org).
-
-```bash
-$ npm install -g bake
-```
-
-Then use the following code to "bake" your website
-
-```javascript
-var bake = require("bake");
-
-bake("/path/to/website");
-```
-
-The directory structure at `/path/to/website` should be like in [the bake
-boilerplate](//github.com/pvorb/bake-tpl). You may fork it to quickly setup
-your site. It also serves as a usage example.
-
-This package is intended to be used as a post-receive hook for a GIT
-repository, that turns the contents of the repository into a website. This way
-it can be used as a CMS. But you don't have to use it like that. It also runs
-independent of GIT.
-
-
-Defining the content
---------------------
-
-The content of your pages is defined in Markdown files in the folder `pub`. You
-also may define additional properties at the top of each document. Here is an
-example for a typical blog post:
-
-```markdown
-title: First post
-date: August, 14th 2011
-author: Paul
-template: post
-
-This is my **first** blog post.
-
-Here's a heading
-----------------
-
-> And this is a block quote
-```
-
-This could be the content of the file `pub/first-post.mkd`. Every file that ends
-with `.mkd`, `.md` or `.markdown` is recognized as a Markdown file.
-
-As you can see it defines a `template`. Bake then looks for the file
-`tpl/post.tpl`. This may be an HTML file.
-
-A very basic version of this `post.tpl` would look like this:
+A template may look like this:
 
 ```html
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>{title} » {websiteTitle}</title>
-	</head>
-	<body>
-		<h1>{title}</h1>
-		<p>Written on {date} by {author}</p>
+<html lang="<%= file.lang %>">
+<head>
+	<meta charset="utf-8">
+	<title><%= file.title %> | <%= global.siteTitle %></title>
+</head>
+<body>
+	<h1><%= file.title %></h1>
 
-{__content}
+<%= file.__content %>
 
-	</body>
+<% if (file.helloWorld) { %>
+	<p>Hello world!</p>
+<% } %>
+
+</body>
 </html>
 ```
 
-This will result in the HTML file `pub/first-post.html`:
+And a corresponding content file could look like this:
 
 ```html
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>First post » {websiteTitle}</title>
-	</head>
-	<body>
-		<h1>First post</h1>
-		<p>Written on August, 14th 2011 by Paul</p>
+title: A sample file
+lang: en
+helloWorld: true
 
-<p>This is my <strong>first</strong> blog post.</p>
-<h2>Here's a heading</h2>
-<blockquote>And this is a block quote</blockquote>
-
-	</body>
-</html>
+<p>Sample text.</p>
 ```
 
-As you can see `{websiteTitle}` is not replaced. Because this property stays the
-same for the whole site, you can define it in `conf/bake.json`:
+With a minimal configuration file
 
 ```javascript
 {
-	"defaultTemplate": "post",
-	"defaultAuthor": "Paul",
+	"fileExtensions": {
+		"html": "html"
+	},
 	"properties": {
-		"websiteTitle": "Paul's Weblog"
+		"siteTitle": "My Site"
 	}
 }
 ```
 
-Bake won't run, if this file doesn't exist.
+the output would be:
+
+```html
+<!DOCTYPE>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>A sample file | My Site</title>
+</head>
+<body>
+	<h1>A sample file</h1>
+
+<p>Sample text.</p>
+
+	<p>Hello world!</p>
+
+</body>
+</html>
+```
+
+**bake** not only enables building websites (although that's its main purpose)
+but lets you choose. You can write hooks for each property to control the
+output.
+
+Visit the [Wiki][wiki] for more information.
 
 
 What this is not
 ================
 
-Bake is no webserver. It doesn't replace your Apache/Nginx. So if you want your
-website to be accessible to the public, you have to change the settings of your
-webserver to use `pub/` as the root directory.
+**bake** is not a webserver. It doesn't replace your Apache/Nginx etc. So if you
+want to write a website that is accessible by the public, you have to change the
+settings of your webserver to use `bakeDir` as the root directory.
 
-Bake is no blogging engine. It doesn't provide generating an index or a feed. It
-doesn't have any commenting functionality.
+**bake** is no blogging engine (although it's possible to create one with the
+help of **bake**). It doesn't provide generating an index or a feed. It doesn't
+have any commenting functionality either.
 
 
 Bugs and Issues
 ===============
 
 If you encounter any bugs or issues, feel free to open an issue at
-[github](//github.com/pvorb/bake/issues).
+[github][issues].
+
 
 License
 =======
 
-This package is licensed under the
-[MIT license](http://vorb.de/license/mit.html).
+This package is licensed under the [MIT license][mit].
 
 Credits
 =======
 
-This work was inspired by
-[heimweh](http://anmutunddemut.de/serie/on-my-way-to-heimweh.html) by
-[ben_](http://anmutunddemut.de/)
-and [txtracer](http://konnexus.net/lexicon/txtracer) by
-[konnexus](http://konnexus.net/), but also by
-[wheat](https://github.com/creationix/wheat) by
-[creationix](http://creationix.com/).
+This work was inspired by [heimweh][heimweh] by [Benjamin Birkenhake][ben_] and
+[txtracer][txtracer] by [Konstantin Weiss][konnexus], but also by
+[wheat][wheat] by [Tim Caswell][creationix] and [jekyll][jekyll] by [Tom
+Preston-Werner][mojombo].
+
+[jekyll]: http://jekyllrb.com/
+[mojombo]: http://tom.preston-werner.com/
+[ejs]: //github.com/visionmedia/ejs
+[npm]: http://npmjs.org/
+[wiki]: //github.com/pvorb/bake/wiki
+[issues]: //github.com/pvorb/bake/issues
+[mit]: http://vorb.de/license/mit.html
+
+[heimweh]: http://anmutunddemut.de/serie/on-my-way-to-heimweh.html
+[ben_]: http://anmutunddemut.de/
+[txtracer]: http://konnexus.net/lexicon/txtracer
+[konnexus]: http://konnexus.net/
+[wheat]: //github.com/creationix/wheat
+[creationix]: //github.com/creationix
+[mojombo]: http://tom.preston-werner.com/
