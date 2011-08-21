@@ -1,0 +1,16 @@
+{
+	"directories": {
+		"bake": "pub",
+		"templates": "tpl"
+	},
+	"fileExtensions": {
+		"mkd": "html",
+		"md": "html",
+		"markdown": "html"
+	},
+	"defaultTemplate": "default",
+	"defaultAuthor" : "Paul Vorbach",
+	"properties": {
+		"websiteTitle": "Paul Vorbach"
+	}
+}
