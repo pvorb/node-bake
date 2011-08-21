@@ -1,9 +1,9 @@
 {
 	"name": "bake",
-	"description": "javascript website bakery for markdown files",
-	"tags": ["website", "blog", "markdown", "template", "git"],
-	"version": "0.0.5",
-	"author": "Paul Vorbach <paul@vorb.de>",
+	"description": "bakery for static files that supports embedded JS templates",
+	"tags": [ "ejs", "template" ],
+	"version": "0.1.0",
+	"author": "Paul Vorbach <paul@vorb.de> (http://vorb.de)",
 	"repository": {
 		"type": "git",
 		"url": "http://github.com/pvorb/bake.git"
@@ -19,6 +19,6 @@
 		"cjson": ">=0.0.3",
 		"dive": ">=0.0.3",
 		"props": ">=0.0.3",
-		"marked": ">=0.0.1"
+		"ejs": ">=0.4.3"
 	}
 }
