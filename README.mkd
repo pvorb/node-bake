@@ -77,7 +77,7 @@ the output (`post.html`) would be:
 but lets you choose. You can write hooks for each property to control the
 output.
 
-Visit the [Wiki][wiki] for more information.
+Visit the [Wiki][wiki] for more information or look at the [example][example].
 
 
 What this is not
@@ -117,6 +117,7 @@ Preston-Werner][mojombo].
 [ejs]: //github.com/visionmedia/ejs
 [npm]: http://npmjs.org/
 [wiki]: //github.com/pvorb/bake/wiki
+[example]: //github.com/pvorb/bake/tree/master/example
 [issues]: //github.com/pvorb/bake/issues
 [mit]: http://vorb.de/license/mit.html
 
