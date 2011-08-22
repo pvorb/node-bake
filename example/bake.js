@@ -3,7 +3,7 @@ var bake = require("bake"),
 
 // Bake some markdown files
 bake(process.cwd() + "/conf/bake.json", {
-	__content: function(file) {
-		return marked(file.__content);
+	__content: function(filename, properties) {
+		return marked(properties.__content);
 	}
 });

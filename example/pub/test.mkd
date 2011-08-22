@@ -3,6 +3,7 @@ date: August 14th, 2011
 author: Paul
 template: post
 
+
 This is my **first** blog post.
 
 Here's a heading
