@@ -93,15 +93,15 @@ var bake = function(conf, hooks) {
 							prop.__content);
 
 					// Result's filename
-					if (prop.__resultFilename == undefined)
-						prop.__resultFilename = master.replace(fileExtPattern,
+					if (prop.__path == undefined)
+						prop.__path = master.replace(fileExtPattern,
 								"." + fileExt[masterExt]);
 
 					// Render ejs-template
 					result = ejs.render(result, { locals: prop });
 
 					// Write contents
-					fs.writeFile(prop.__resultFilename, result, function(err) {
+					fs.writeFile(prop.__path, result, function(err) {
 						// Throw errors
 						if (err) throw err;
 
@@ -110,7 +110,7 @@ var bake = function(conf, hooks) {
 							hooks.__writeAfter(master, prop);
 
 						// Log status on success
-						console.log("  " + prop.__resultFilename + " written.\n");
+						console.log("  " + prop.__path + " written.\n");
 
 						// When file counter is zero
 						if (!--todo) {
