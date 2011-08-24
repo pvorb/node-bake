@@ -4,18 +4,20 @@ var fs = require("fs"),
     ejs = require("ejs");
 
 // Main function
-var bake = function(confFile, hooks) {
+var bake = function(conf, hooks) {
 
 	// File counter
 	var todo = 0;
 
-	// Ensure hooks is an object
+	// Ensure `conf` is an object
+	if (typeof conf === "string")
+		conf = JSON.parse(conf);
+	if (typeof conf !== "object")
+		throw new Error("parameter conf must be a valid configuration object");
+
+	// Ensure `hooks` is an object
 	if (typeof hooks !== "object")
 		hooks = { };
-
-	// Load the configuration file
-	var conf = JSON.parse(fs.readFileSync(confFile, "utf8"));
-	console.log("Successfully loaded configuration file.");
 
 	// Set values for `bakeDir` and `tplDir`
 	var bakeDir = conf.directories.bake || "pub",

@@ -1,8 +1,12 @@
-var bake = require("bake"),
+var fs = require("fs"),
+    bake = require("bake"),
     marked = require("marked");
 
+// Read the configuration file
+var conf = fs.readFileSync(process.cwd() + "/conf/bake.json", "utf8");
+
 // Bake some markdown files
-bake(process.cwd() + "/conf/bake.json", {
+bake(conf, {
 	__content: function(filename, properties) {
 		return marked(properties.__content);
 	}

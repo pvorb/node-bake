@@ -41,7 +41,7 @@ helloWorld: true
 <p>Sample text.</p>
 ```
 
-With a minimal configuration file (`bake.json`)
+With a minimal configuration object
 
 ```javascript
 {
