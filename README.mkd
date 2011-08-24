@@ -16,14 +16,14 @@ A template (`default.tpl`) may look like this:
 <html lang="<%= file.lang %>">
 <head>
 	<meta charset="utf-8">
-	<title><%= file.title %> | <%= global.siteTitle %></title>
+	<title><%= title %> | <%= siteTitle %></title>
 </head>
 <body>
-	<h1><%= file.title %></h1>
+	<h1><%= title %></h1>
 
-<%= file.__content %>
+<%= __content %>
 
-<% if (file.helloWorld) { %>
+<% if (helloWorld) { %>
 	<p>Hello world!</p>
 <% } %>
 
