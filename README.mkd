@@ -13,7 +13,7 @@ A template (`default.tpl`) may look like this:
 
 ```html
 <!DOCTYPE html>
-<html lang="<%= file.lang %>">
+<html lang="<%= lang %>">
 <head>
 	<meta charset="utf-8">
 	<title><%= title %> | <%= siteTitle %></title>
