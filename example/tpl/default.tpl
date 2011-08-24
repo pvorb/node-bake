@@ -1,1 +1,1 @@
-<%= file.__content %>
+<%= __content %>

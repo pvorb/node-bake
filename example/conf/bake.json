@@ -9,9 +9,9 @@
 		"markdown": "html",
 		"txt": "html"
 	},
-	"defaultTemplate": "default",
 	"properties": {
+		"template": "default",
 		"author": "Paul",
-		"websiteTitle": "My Site"
+		"siteTitle": "My Site"
 	}
 }

@@ -54,71 +54,69 @@ var bake = function(conf, hooks) {
 				if (err) throw err;
 
 				// Get the properties
-				// `file` is the file specific property object
-				var file = props(data);
-				// `global` is the global property object
-				var global = conf.properties;
+				// `prop` is the file specific property object
+				var prop = props(data);
 
-				// Assert that `file.template` is set
-				if (file.template == undefined)
-					file.template = global.defaultTemplate || "default";
+				// Amend `prop` by properties in `conf.properties` if defined
+				if (conf.properties != undefined)
+					for (var key in conf.properties) {
+						if (prop[key] == undefined)
+							prop[key] = conf.properties[key];
+					}
+
+				// Assert that `prop.template` is set
+				if (prop.template == undefined)
+					prop.template = "default";
+
+				// `__propBefore` hook
+				if (hooks.__propBefore != undefined)
+					prop = hooks.__propBefore(master, prop);
+
+				// Various property hooks
+				for (var key in prop)
+					if (hooks[key] != undefined)
+						prop[key] = hooks[key](master, prop);
+
+				// `__propAfter` hook
+				if (hooks.__propAfter != undefined)
+					prop = hooks.__propAfter(master, prop);
 
 				// Read the template file
-				fs.readFile(tplDir + "/" + file.template + ".tpl", "utf8",
+				fs.readFile(tplDir + "/" + prop.template + ".tpl", "utf8",
 						function(err, result) {
 					// Throw errors
 					if (err) throw err;
 
-					// Preceding hooks
-					if (hooks.__global != undefined)
-						global = hooks.__global(master, global);
-					if (hooks.__file != undefined)
-						file = hooks.__file(master, file);
-
-					// For all keys of `global`
-					for (var key in global)
-						// If a hook is defined, apply it
-						if (hooks[key] != undefined)
-							global[key] = hooks[key](master, global);
-
-					// For all keys of `file`
-					for (var key in file)
-						// If a hook is defined, apply it
-						if (hooks[key] != undefined)
-							file[key] = hooks[key](master, file);
-
 					// (Pre-)Insert the content (so there may be ejs-tags in
-					// `file.__content` are parsed, too.
-					result = result.replace(/<%= +file.__content +%>/g,
-							file.__content);
+					// `prop.__content` are parsed, too.
+					result = result.replace(/<%= +__content +%>/g,
+							prop.__content);
 
 					// Result's filename
-					var resultFilename = master.replace(fileExtPattern,
-							"." + fileExt[masterExt]);
-
-					// Export `file` and `global` to locals object for use in the
-					// template.
-					var locals = {
-						file: file,
-						global: global
-					};
+					if (prop.__resultFilename == undefined)
+						prop.__resultFilename = master.replace(fileExtPattern,
+								"." + fileExt[masterExt]);
 
 					// Render ejs-template
-					result = ejs.render(result, { locals: locals });
+					result = ejs.render(result, { locals: prop });
 
 					// Write contents
-					fs.writeFile(resultFilename, result, function(err) {
+					fs.writeFile(prop.__resultFilename, result, function(err) {
 						// Throw errors
 						if (err) throw err;
 
+						// `__written` hook
+						if (hooks.__writeAfter != undefined)
+							hooks.__writeAfter(master, prop);
+
 						// Log status on success
-						console.log("  " + resultFilename + " written.\n");
+						console.log("  " + prop.__resultFilename + " written.\n");
 
 						// When file counter is zero
 						if (!--todo) {
-							if (hooks["__complete"] != undefined)
-								// Call the completion hook
-								hooks["__complete"](master, global, file);
+							// `__complete` hook
+							if (hooks.__complete != undefined)
+								hooks.__complete(master, prop);
 
 							// State final message
 							console.log("Everything has been successfully baked!");
