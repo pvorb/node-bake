@@ -6,7 +6,7 @@
 	"author": "Paul Vorbach <paul@vorb.de> (http://vorb.de)",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/pvorb/pie.git"
+		"url": "git://github.com/pvorb/bake.git"
 	},
 	"bugs": {
 		"web": "http://github.com/pvorb/bake/issues"
