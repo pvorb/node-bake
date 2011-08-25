@@ -10,7 +10,7 @@
 		"txt": "html"
 	},
 	"properties": {
-		"template": "default",
+		"template": "default.tpl",
 		"author": "Paul",
 		"siteTitle": "My Site"
 	}

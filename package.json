@@ -2,7 +2,7 @@
 	"name": "bake",
 	"description": "bakery for static files (like jekyll) that supports embedded JS templates",
 	"tags": [ "ejs", "template" ],
-	"version": "0.4.1",
+	"version": "0.5.0",
 	"author": "Paul Vorbach <paul@vorb.de> (http://vorb.de)",
 	"repository": {
 		"type": "git",

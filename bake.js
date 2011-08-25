@@ -66,7 +66,7 @@ var bake = function(conf, hooks) {
 
 				// Assert that `prop.template` is set
 				if (prop.template == undefined)
-					prop.template = "default";
+					prop.template = "default.tpl";
 
 				// `__propBefore` hook
 				if (hooks.__propBefore != undefined)
@@ -82,7 +82,7 @@ var bake = function(conf, hooks) {
 					prop = hooks.__propAfter(master, prop);
 
 				// Read the template file
-				fs.readFile(tplDir + "/" + prop.template + ".tpl", "utf8",
+				fs.readFile(tplDir + "/" + prop.template, "utf8",
 						function(err, result) {
 					// Throw errors
 					if (err) throw err;
