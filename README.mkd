@@ -119,9 +119,9 @@ Preston-Werner][mojombo].
 [mojombo]: http://tom.preston-werner.com/
 [ejs]: //github.com/visionmedia/ejs
 [npm]: http://npmjs.org/
-[wiki]: //github.com/pvorb/bake/wiki
-[example]: //github.com/pvorb/bake/tree/master/example
-[issues]: //github.com/pvorb/bake/issues
+[wiki]: //github.com/pvorb/node-bake/wiki
+[example]: //github.com/pvorb/node-bake/tree/master/example
+[issues]: //github.com/pvorb/node-bake/issues
 [mit]: http://vorb.de/license/mit.html
 
 [heimweh]: http://anmutunddemut.de/serie/on-my-way-to-heimweh.html
