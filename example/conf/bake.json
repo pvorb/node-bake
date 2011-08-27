@@ -1,6 +1,7 @@
 {
 	"directories": {
-		"bake": "pub",
+		"input": "pub",
+		"output": "pub",
 		"templates": "tpl"
 	},
 	"fileExtensions": {

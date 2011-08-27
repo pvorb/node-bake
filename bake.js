@@ -19,8 +19,9 @@ var bake = function(conf, hooks) {
 	if (typeof hooks !== "object")
 		hooks = { };
 
-	// Set values for `bakeDir` and `tplDir`
-	var bakeDir = conf.directories.bake || "pub",
+	// Set values for `inputDir`, `outputDir` and `tplDir`
+	var inputDir = conf.directories.input || "pub",
+		 outputDir = conf.directories.output || "pub",
 	    tplDir = conf.directories.templates || "tpl";
 
 	// Set values for `fileExt`
@@ -29,10 +30,10 @@ var bake = function(conf, hooks) {
 			= new RegExp("\.(" + Object.keys(fileExt).join("|") + ")$", "i");
 
 	// Status log
-	console.log("Beginning to bake " + bakeDir + ".\n");
+	console.log("Beginning to bake " + inputDir + ".\n");
 
 	// Dive into the public directory
-	dive(bakeDir, function(err, master) {
+	dive(inputDir, function(err, master) {
 		// Throw errors
 		if (err) throw err;
 
@@ -93,15 +94,20 @@ var bake = function(conf, hooks) {
 							prop.__content);
 
 					// Result's filename
+					var resName = master.replace(fileExtPattern,
+							"." + fileExt[masterExt]);
+
 					if (prop._id == undefined)
-						prop._id = master.replace(fileExtPattern,
-								"." + fileExt[masterExt]);
+						prop._id = resName.replace(inputDir, "");
+
+					// Add output dir
+					resName = outputDir + prop._id;
 
 					// Render ejs-template
 					result = ejs.render(result, { locals: prop });
 
 					// Write contents
-					fs.writeFile(prop._id, result, function(err) {
+					fs.writeFile(resName, result, function(err) {
 						// Throw errors
 						if (err) throw err;
 
@@ -110,7 +116,7 @@ var bake = function(conf, hooks) {
 							hooks.__writeAfter(master, prop);
 
 						// Log status on success
-						console.log("  " + prop._id + " written.\n");
+						console.log("  " + resName + " written.\n");
 
 						// When file counter is zero
 						if (!--todo) {
