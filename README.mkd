@@ -122,7 +122,7 @@ Preston-Werner][mojombo].
 [npm]: http://npmjs.org/
 [wiki]: //github.com/pvorb/node-bake/wiki
 [example]: //github.com/pvorb/node-bake/tree/master/example
-[break]: //github.com/pvorb/node-bread
+[bread]: //github.com/pvorb/node-bread
 [issues]: //github.com/pvorb/node-bake/issues
 [mit]: http://vorb.de/license/mit.html
 
