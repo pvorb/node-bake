@@ -1,6 +1,8 @@
 var fs = require("fs"),
-    bake = require("bake"),
-    marked = require("marked");
+    marked = require("marked"),
+    bake = require("../");
+
+var a = {};
 
 // Read the configuration file
 var conf = fs.readFileSync(process.cwd() + "/conf/bake.json", "utf8");

@@ -23,8 +23,8 @@ A template (`default.tpl`) may look like this:
 
 <%= __content %>
 
-<% if (helloWorld) { %>
-	<p>Hello world!</p>
+<% if (has('foo')) { %>
+	<p>Foo is defined.</p>
 <% } %>
 
 </body>
@@ -36,7 +36,6 @@ And a corresponding content file (`post.txt`) could look like this:
 ```html
 title: A sample file
 lang: en
-helloWorld: true
 
 
 <p>Sample text.</p>
@@ -69,7 +68,7 @@ the output (`post.html`) would be:
 
 <p>Sample text.</p>
 
-	<p>Hello world!</p>
+
 
 </body>
 </html>

@@ -58,6 +58,9 @@ var bake = function(conf, hooks) {
 				// `prop` is the file specific property object
 				var prop = props(data);
 
+				// Define `hasOwnProperty` shorthand
+				prop.has = prop.hasOwnProperty;
+
 				// Amend `prop` by properties in `conf.properties` if defined
 				if (conf.properties != undefined)
 					for (var key in conf.properties) {
@@ -88,15 +91,16 @@ var bake = function(conf, hooks) {
 					// Throw errors
 					if (err) throw err;
 
-					// (Pre-)Insert the content (so there may be ejs-tags in
+					// (Pre-)Insert the content (so ejs-tags in
 					// `prop.__content` are parsed, too.
-					result = result.replace(/<%= +__content +%>/g,
+					result = result.replace(/<%=\s+__content\s+%>/g,
 							prop.__content);
 
 					// Result's filename
 					var resName = master.replace(fileExtPattern,
 							"." + fileExt[masterExt]);
 
+					// New file's path
 					if (prop._id == undefined)
 						prop._id = resName.replace(inputDir, "");
 
