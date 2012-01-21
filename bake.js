@@ -1,141 +1,150 @@
-var fs = require("fs"),
-    props = require("props"),
-    dive = require("dive"),
-    ejs = require("ejs");
+var fs = require('fs');
+var path = require('path');
+var props = require('props');
+var dive = require('dive');
+var ejs = require('ejs');
 
 // Main function
 var bake = function(conf, hooks) {
 
-	// File counter
-	var todo = 0;
+  // File counter
+  var todo = 0;
 
-	// Ensure `conf` is an object
-	if (typeof conf === "string")
-		conf = JSON.parse(conf);
-	if (typeof conf !== "object")
-		throw new Error("parameter conf must be a valid configuration object");
+  // Ensure `conf` is an object
+  if (typeof conf == 'string')
+    conf = JSON.parse(conf);
+  if (typeof conf != 'object')
+    throw new Error('parameter conf must be a valid configuration object');
 
-	// Ensure `hooks` is an object
-	if (typeof hooks !== "object")
-		hooks = { };
+  // Ensure `hooks` is an object
+  if (typeof hooks != 'object')
+    hooks = { };
 
-	// Set values for `inputDir`, `outputDir` and `tplDir`
-	var inputDir = conf.directories.input || "pub",
-		 outputDir = conf.directories.output || "pub",
-	    tplDir = conf.directories.templates || "tpl";
+  // Set values for `inputDir`, `outputDir` and `tplDir`
+  var inputDir = conf.directories.input || 'pub';
+  var outputDir = conf.directories.output || 'pub';
+  var tplDir = conf.directories.templates || 'tpl';
 
-	// Set values for `fileExt`
-	var fileExt = conf.fileExtensions || { txt: "html" };
-	var fileExtPattern
-			= new RegExp("\.(" + Object.keys(fileExt).join("|") + ")$", "i");
+  inputDir = path.resolve(process.cwd(), inputDir);
+  outputDir = path.resolve(process.cwd(), outputDir);
+  tplDir = path.resolve(process.cwd(), tplDir);
 
-	// Status log
-	console.log("Beginning to bake " + inputDir + ".\n");
+  // Set values for `fileExt`
+  var fileExt = conf.fileExtensions || { txt: 'html' };
+  var fileExtPattern
+      = new RegExp('\.(' + Object.keys(fileExt).join('|') + ')$', 'i');
 
-	// Dive into the public directory
-	dive(inputDir, function(err, master) {
-		// Throw errors
-		if (err) throw err;
+  // Status log
+  console.log('Beginning to bake ' + inputDir + '.\n');
 
-		// Matching variable
-		var match;
+  // Dive into the public directory
+  dive(inputDir, function(err, master) {
+    // Throw errors
+    if (err) throw err;
 
-		// Match the master-file's name against enabled file extensions
-		if (match = master.match(fileExtPattern)) {
+    // Matching variable
+    var match;
 
-			// Get the file extension of the master file
-			var masterExt = match[1];
+    // Match the master-file's name against enabled file extensions
+    if (match = master.match(fileExtPattern)) {
 
-			// Increase file counter
-			++todo;
+      // Get the file extension of the master file
+      var masterExt = match[1];
 
-			// Read the master-file's contents
-			fs.readFile(master, "utf8", function(err, data) {
-				// Throw errors
-				if (err) throw err;
+      // Increase file counter
+      ++todo;
 
-				// Get the properties
-				// `prop` is the file specific property object
-				var prop = props(data);
+      // Read the master-file's contents
+      fs.readFile(master, 'utf8', function(err, data) {
+        // Throw errors
+        if (err) throw err;
 
-				// Define `hasOwnProperty` shorthand
-				prop.has = prop.hasOwnProperty;
+        // Get the properties
+        // `prop` is the file specific property object
+        var prop = props(data);
 
-				// Amend `prop` by properties in `conf.properties` if defined
-				if (conf.properties != undefined)
-					for (var key in conf.properties) {
-						if (prop[key] == undefined)
-							prop[key] = conf.properties[key];
-					}
+        // Define `hasOwnProperty` shorthand
+        prop.has = prop.hasOwnProperty;
 
-				// Assert that `prop.template` is set
-				if (prop.template == undefined)
-					prop.template = "default.tpl";
+        // Amend `prop` by properties in `conf.properties` if defined
+        if (conf.properties != undefined)
+          for (var key in conf.properties) {
+            if (prop[key] == undefined)
+              prop[key] = conf.properties[key];
+          }
 
-				// `__propBefore` hook
-				if (hooks.__propBefore != undefined)
-					prop = hooks.__propBefore(master, prop);
+        // Assert that `prop.template` is set
+        if (prop.template == undefined)
+          prop.template = 'default.tpl';
 
-				// Various property hooks
-				for (var key in prop)
-					if (hooks[key] != undefined)
-						prop[key] = hooks[key](master, prop);
+        // `__propBefore` hook
+        if (hooks.__propBefore != undefined)
+          prop = hooks.__propBefore(master, prop);
 
-				// `__propAfter` hook
-				if (hooks.__propAfter != undefined)
-					prop = hooks.__propAfter(master, prop);
+        // Various property hooks
+        for (var key in prop)
+          if (hooks[key] != undefined)
+            prop[key] = hooks[key](master, prop);
 
-				// Read the template file
-				fs.readFile(tplDir + "/" + prop.template, "utf8",
-						function(err, result) {
-					// Throw errors
-					if (err) throw err;
+        // `__propAfter` hook
+        if (hooks.__propAfter != undefined)
+          prop = hooks.__propAfter(master, prop);
 
-					// (Pre-)Insert the content (so ejs-tags in
-					// `prop.__content` are parsed, too.
-					result = result.replace(/<%=\s+__content\s+%>/g,
-							prop.__content);
+        // Read the template file
+        fs.readFile(path.resolve(tplDir, prop.template), 'utf8',
+            function(err, result) {
+          // Throw errors
+          if (err) throw err;
 
-					// Result's filename
-					var resName = master.replace(fileExtPattern,
-							"." + fileExt[masterExt]);
+          // (Pre-)Insert the content (so ejs-tags in
+          // `prop.__content` are parsed, too.
+          result = result.replace(/<%=\s+__content\s+%>/g,
+              prop.__content);
 
-					// New file's path
-					if (prop._id == undefined)
-						prop._id = resName.replace(inputDir, "");
+          // Result's filename
+          var resName = master.replace(fileExtPattern,
+              '.' + fileExt[masterExt]);
 
-					// Add output dir
-					resName = outputDir + prop._id;
+          // New file's path
+          if (prop._id == undefined)
+            prop._id = resName.replace(inputDir, '');
 
-					// Render ejs-template
-					result = ejs.render(result, { locals: prop });
+          // Remove first slash
+          if (/^\//, prop._id)
+            prop._id = prop._id.substring(1);
 
-					// Write contents
-					fs.writeFile(resName, result, function(err) {
-						// Throw errors
-						if (err) throw err;
+          // Add output dir
+          resName = path.resolve(outputDir, prop._id);
 
-						// `__written` hook
-						if (hooks.__writeAfter != undefined)
-							hooks.__writeAfter(master, prop);
+          // Render ejs-template
+          result = ejs.render(result, { locals: prop });
 
-						// Log status on success
-						console.log("  " + resName + " written.\n");
+          // Write contents
+          fs.writeFile(resName, result, function(err) {
+            // Throw errors
+            if (err) throw err;
 
-						// When file counter is zero
-						if (!--todo) {
-							// `__complete` hook
-							if (hooks.__complete != undefined)
-								hooks.__complete(master, prop);
+            // `__written` hook
+            if (hooks.__writeAfter != undefined)
+              hooks.__writeAfter(master, prop);
 
-							// State final message
-							console.log("Everything has been successfully baked!");
-						}
-					});
-				});
-			});
-		}
-	});
+            // Log status on success
+            console.log('  ' + resName + ' written.\n');
+
+            // When file counter is zero
+            if (!--todo) {
+              // `__complete` hook
+              if (hooks.__complete != undefined)
+                hooks.__complete(master, prop);
+
+              // State final message
+              console.log('Everything has been successfully baked!');
+            }
+          });
+        });
+      });
+    }
+  });
 };
 
 module.exports = bake;
