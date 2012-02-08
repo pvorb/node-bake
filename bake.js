@@ -21,13 +21,14 @@ var bake = function(conf, hooks, cb) {
     hooks = { };
 
   // Set values for `inputDir`, `outputDir` and `tplDir`
+  var root = conf.root || process.cwd();
   var inputDir = conf.directories.input || 'pub';
   var outputDir = conf.directories.output || 'pub';
   var tplDir = conf.directories.templates || 'tpl';
 
-  inputDir = path.resolve(process.cwd(), inputDir);
-  outputDir = path.resolve(process.cwd(), outputDir);
-  tplDir = path.resolve(process.cwd(), tplDir);
+  inputDir = path.resolve(root, inputDir);
+  outputDir = path.resolve(root, outputDir);
+  tplDir = path.resolve(root, tplDir);
 
   // Set values for `fileExt`
   var fileExt = conf.fileExtensions || { txt: 'html' };
