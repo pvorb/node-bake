@@ -14,4 +14,4 @@ bake(conf, {
   __content: function(filename, properties) {
     return marked(properties.__content);
   }
-});
+}, function () {});
