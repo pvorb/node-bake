@@ -6,7 +6,6 @@ template: post.tpl
 
 This is my **first** blog post.
 
-Here's a heading
-----------------
+# Here's a heading
 
 > And this is a block quote

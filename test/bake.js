@@ -6,8 +6,11 @@ var bake = require('../bake.js');
 var a = {};
 
 // Read the configuration file
-var conf = fs.readFileSync(path.resolve(process.cwd(), 'conf/bake.json'),
+var conf = fs.readFileSync(path.resolve(__dirname, 'conf/bake.json'),
     'utf8');
+
+conf = JSON.parse(conf);
+conf.root = __dirname;
 
 var hooks = {
   __content: function(fn, properties, callback) {
