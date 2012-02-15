@@ -157,7 +157,7 @@ var bake = function(conf, hooks, cb) {
                       return cb(err);
 
                     // Log status on success
-                    console.log('  ' + resName + ' written.');
+                    console.log('  * ' + resName + ' written.');
 
                     // When file counter is zero
                     if (!--todo) {
