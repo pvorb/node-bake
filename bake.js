@@ -127,8 +127,10 @@ var bake = function(conf, hooks, cb) {
                     '.' + fileExt[masterExt]);
 
                 // New file's path
-                if (typeof prop._id == 'undefined')
+                if (typeof prop._id == 'undefined') {
                   prop._id = resName.replace(inputDir, '');
+                  prop._id = prop._id.replace(/\/, '/');
+                }
 
                 // Remove first slash
                 if (/^\//, prop._id)
