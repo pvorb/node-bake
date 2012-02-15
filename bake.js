@@ -4,6 +4,8 @@ var props = require('props');
 var dive = require('dive');
 var ejs = require('ejs');
 var async = require('async');
+var clone = require('clone');
+var append = require('append');
 
 // Main function
 var bake = function(conf, hooks, cb) {
@@ -11,15 +13,8 @@ var bake = function(conf, hooks, cb) {
   // File counter
   var todo = 0;
 
-  // Ensure `conf` is an object
-  if (typeof conf == 'string')
-    conf = JSON.parse(conf);
   if (typeof conf != 'object')
     return cb(new Error('parameter conf must be a valid configuration object'));
-
-  // Ensure `hooks` is an object
-  if (typeof hooks != 'object')
-    hooks = { };
 
   // Set values for `inputDir`, `outputDir` and `tplDir`
   var root = conf.root || process.cwd();
@@ -69,10 +64,7 @@ var bake = function(conf, hooks, cb) {
 
         // Amend `prop` by properties in `conf.properties` if defined
         if (conf.properties)
-          for (var key in conf.properties) {
-            if (typeof prop[key] == 'undefined')
-              prop[key] = conf.properties[key];
-          }
+          prop = append(clone(conf.properties), prop);
 
         // Assert that `prop.template` is set
         if (typeof prop.template == 'undefined')
@@ -92,16 +84,16 @@ var bake = function(conf, hooks, cb) {
           var tasks = {};
 
           // Various property hooks
-          for (var key in prop) {(function (key) {
+          for (var key in prop) {(function (prop, key) {
             if (hooks[key])
               tasks[key] = function (callback) {
-                hooks[key](master, prop, callback);
+                return hooks[key](master, prop, callback);
               };
             else
               tasks[key] = function (callback) {
-                callback(null, prop.key);
+                return callback(null, prop[key]);
               };
-          })(key);}
+          })(prop, key);}
 
           // run tasks in parallel
           async.parallel(tasks, function (err, prop) {
@@ -110,7 +102,7 @@ var bake = function(conf, hooks, cb) {
 
             // `__propAfter` hook
             if (hooks.__propAfter)
-              prop = hooks.__propAfter(master, prop, propAfterCB);
+              hooks.__propAfter(master, prop, propAfterCB);
             else
               propAfterCB(null, prop);
 
