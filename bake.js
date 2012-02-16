@@ -132,15 +132,15 @@ var bake = function(conf, hooks, cb) {
                   prop._id = prop._id.replace(/\/, '/');
                 }
 
-                // Remove first slash
-                if (/^\//, prop._id)
-                  prop._id = prop._id.substring(1);
-
                 // Add output dir
                 resName = path.resolve(outputDir, prop._id);
 
                 // Render ejs-template
                 result = ejs.render(result, { locals: prop });
+
+                // Remove first slash
+                if (/^\//, prop._id)
+                  prop._id = prop._id.substring(1)
 
                 // Write contents
                 fs.writeFile(resName, result, function(err) {
