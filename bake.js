@@ -129,18 +129,18 @@ var bake = function(conf, hooks, cb) {
                 // New file's path
                 if (typeof prop._id == 'undefined') {
                   prop._id = resName.replace(inputDir, '');
-                  prop._id = prop._id.replace(/\/, '/');
+                  prop._id = prop._id.replace(/\\/, '/');
                 }
-
-                // Add output dir
-                resName = path.resolve(outputDir, prop._id);
 
                 // Render ejs-template
                 result = ejs.render(result, { locals: prop });
 
                 // Remove first slash
-                if (/^\//, prop._id)
+                if (/^\//.test(prop._id))
                   prop._id = prop._id.substring(1)
+
+                // absolute path
+                resName = path.resolve(outputDir, prop._id);
 
                 // Write contents
                 fs.writeFile(resName, result, function(err) {
