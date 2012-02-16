@@ -129,7 +129,7 @@ var bake = function(conf, hooks, cb) {
                 // New file's path
                 if (typeof prop._id == 'undefined') {
                   prop._id = resName.replace(inputDir, '');
-                  prop._id = prop._id.replace('\\', '/');
+                  prop._id = prop._id.replace(new RegExp('\\\\', 'g'), '/');
                 }
 
                 // Render ejs-template
