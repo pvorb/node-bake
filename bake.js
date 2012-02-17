@@ -12,6 +12,7 @@ var bake = function(conf, hooks, cb) {
 
   // File counter
   var todo = 0;
+  var matched = 0;
 
   if (typeof conf != 'object')
     return cb(new Error('parameter conf must be a valid configuration object'));
@@ -55,6 +56,7 @@ var bake = function(conf, hooks, cb) {
 
       // Increase file counter
       ++todo;
+      ++matched;
 
       // Read the master-file's contents
       fs.readFile(master, 'utf8', function(err, data) {
@@ -181,6 +183,9 @@ var bake = function(conf, hooks, cb) {
         }
       });
     }
+  }, function () {
+    if (todo == 0)
+      return cb();
   });
 };
 
