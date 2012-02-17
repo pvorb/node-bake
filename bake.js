@@ -31,6 +31,8 @@ var bake = function(conf, hooks, cb) {
   var fileExtPattern
       = new RegExp('\\.(' + Object.keys(fileExt).join('|') + ')$', 'i');
 
+  var ignore = conf.ignore || [];
+
   // Status log
   console.log('Beginning to bake ' + inputDir + '.');
 
@@ -44,7 +46,8 @@ var bake = function(conf, hooks, cb) {
     var match;
 
     // Match the master-file's name against enabled file extensions
-    if (match = master.match(fileExtPattern)) {
+    if (ignore.indexOf(master) == -1
+        && (match = master.match(fileExtPattern))) {
 
       // Get the file extension of the master file
       var masterExt = match[1];
