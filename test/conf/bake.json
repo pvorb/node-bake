@@ -16,6 +16,6 @@
     "siteTitle": "My Site"
   },
   "ignore": [
-    "robots.txt"
+    "ignore.mkd"
   ]
 }
