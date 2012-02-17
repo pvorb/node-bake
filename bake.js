@@ -44,10 +44,11 @@ var bake = function(conf, hooks, cb) {
 
     // Matching variable
     var match;
+    var pathFromRoot = master.replace(inputDir, '').substr(1);
 
     // Match the master-file's name against enabled file extensions
-    if (ignore.indexOf(master) == -1
-        && (match = master.match(fileExtPattern))) {
+    if ((match = master.match(fileExtPattern))
+        && ignore.indexOf(pathFromRoot) == -1) {
 
       // Get the file extension of the master file
       var masterExt = match[1];
