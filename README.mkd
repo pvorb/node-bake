@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/pvorb/node-bake.png)](http://travis-ci.org/pvorb/node-bake)
 # bake
 
 bake is a template engine for static text files. It is something like
