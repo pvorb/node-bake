@@ -6,6 +6,7 @@ var ejs = require('ejs');
 var async = require('async');
 var clone = require('clone');
 var append = require('append');
+var mkdirp = require('mkdirp');
 
 // Main function
 var bake = function(conf, hooks, cb) {
@@ -137,7 +138,16 @@ var bake = function(conf, hooks, cb) {
                 }
 
                 // Render ejs-template
-                result = ejs.render(result, { locals: prop });
+                try {
+                  result = ejs.render(result, { locals: prop });
+                } catch (err) {
+                  console.error('\nAn error occurred:\n==================\n');
+                  console.error('properties: ', prop);
+                  console.error('template: ',
+                    path.resolve(tplDir, prop.template));
+
+                  throw err;
+                }
 
                 // Remove first slash
                 if (/^\//.test(prop._id))
@@ -145,6 +155,8 @@ var bake = function(conf, hooks, cb) {
 
                 // absolute path
                 resName = path.resolve(outputDir, prop._id);
+                var parentDir = path.resolve(resName, '..');
+                mkdirp.sync(parentDir);
 
                 // Write contents
                 fs.writeFile(resName, result, function(err) {
